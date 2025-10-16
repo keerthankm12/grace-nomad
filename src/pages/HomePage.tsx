@@ -86,7 +86,7 @@ export const HomePage = ({ onViewPackage }: HomePageProps) => {
                 placeholder="Search your destinations..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 py-6 text-lg rounded-2xl shadow-xl border-2 border-primary/20 focus:border-primary"
+                className="pl-12 py-6 text-lg rounded-2xl shadow-xl border-2 border-primary/20 focus:border-primary bg-white"
               />
             </div>
           </div>
