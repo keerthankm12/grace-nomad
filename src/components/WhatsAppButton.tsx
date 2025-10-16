@@ -5,9 +5,8 @@ export const WhatsAppButton = () => {
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+    window.open(whatsappUrl, '_blank');
   };
-
   return (
     <button
       onClick={handleClick}
