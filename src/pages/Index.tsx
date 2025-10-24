@@ -1,55 +1,70 @@
 import { useState } from 'react';
-import { Navigation } from '@/components/Navigation';
+import { Header } from '@/components/Header';
+import { NewHomePage } from '@/pages/NewHomePage';
+import { NewDestinationsPage } from '@/pages/NewDestinationsPage';
+import { TripDetailPage } from '@/pages/TripDetailPage';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
-import { Footer } from '@/components/Footer';
-import { HomePage } from '@/pages/HomePage';
-import { DestinationsPage } from '@/pages/DestinationsPage';
-import { PackageDetailPage } from '@/pages/PackageDetailPage';
-import { BookingsPage } from '@/pages/BookingsPage';
-import { VisaPage } from '@/pages/VisaPage';
-import { ContactPage } from '@/pages/ContactPage';
+import { NewFooter } from '@/components/NewFooter';
 
-type Page = 'home' | 'destinations' | 'bookings' | 'visa' | 'contact' | 'packageDetail';
+type Page = 'home' | 'destinations' | 'hotel' | 'flights' | 'cruise' | 'visa' | 'tripDetail' | 'contact' | 'about' | 'gallery' | 'blogs';
 
 const Index = () => {
   const [currentPage, setCurrentPage] = useState<Page>('home');
-  const [selectedPackageId, setSelectedPackageId] = useState<string | null>(null);
+  const [selectedTripId, setSelectedTripId] = useState<string | null>(null);
 
   const handleNavigate = (page: string) => {
     setCurrentPage(page as Page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleViewPackage = (packageId: string) => {
-    setSelectedPackageId(packageId);
-    setCurrentPage('packageDetail');
+  const handleTripSelect = (tripId: string) => {
+    setSelectedTripId(tripId);
+    setCurrentPage('tripDetail');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleBackToDestinations = () => {
     setCurrentPage('destinations');
-    setSelectedPackageId(null);
+    setSelectedTripId(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const renderPlaceholderPage = (title: string) => (
+    <div className="min-h-screen bg-blue-50 flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold text-gray-800 mb-4">{title}</h1>
+        <p className="text-gray-600">This page is coming soon!</p>
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-background">
-      <Navigation currentPage={currentPage} onNavigate={handleNavigate} />
+      <Header 
+        currentPage={currentPage} 
+        onNavigate={handleNavigate}
+        onTripSelect={handleTripSelect}
+      />
       
-      {currentPage === 'home' && <HomePage onViewPackage={handleViewPackage} />}
-      {currentPage === 'destinations' && <DestinationsPage onViewPackage={handleViewPackage} />}
-      {currentPage === 'bookings' && <BookingsPage />}
-      {currentPage === 'visa' && <VisaPage />}
-      {currentPage === 'contact' && <ContactPage />}
-      {currentPage === 'packageDetail' && selectedPackageId && (
-        <PackageDetailPage
-          packageId={selectedPackageId}
+      {currentPage === 'home' && <NewHomePage onTripSelect={handleTripSelect} />}
+      {currentPage === 'destinations' && <NewDestinationsPage onTripSelect={handleTripSelect} />}
+      {currentPage === 'hotel' && renderPlaceholderPage('Hotels')}
+      {currentPage === 'flights' && renderPlaceholderPage('Flights')}
+      {currentPage === 'cruise' && renderPlaceholderPage('Cruise')}
+      {currentPage === 'visa' && renderPlaceholderPage('Visa & Travel Insurance')}
+      {currentPage === 'contact' && renderPlaceholderPage('Contact Us')}
+      {currentPage === 'about' && renderPlaceholderPage('About Us')}
+      {currentPage === 'gallery' && renderPlaceholderPage('Gallery')}
+      {currentPage === 'blogs' && renderPlaceholderPage('Blogs')}
+      {currentPage === 'tripDetail' && selectedTripId && (
+        <TripDetailPage
+          tripId={selectedTripId}
           onBack={handleBackToDestinations}
         />
       )}
 
       <WhatsAppButton />
-      <Footer onNavigate={handleNavigate} />
+      <NewFooter onNavigate={handleNavigate} />
     </div>
   );
 };
